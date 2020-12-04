@@ -42,8 +42,11 @@ namespace Roommate43
                     case ("Add a chore"):
                         InsertChore(choreRepo);
                         break;
-                    case ("Search for roommate"):
-                        SearchOneRoommate(roommateRepo);
+                    case ("Find a roommate"):
+                        FindARoommate(roommateRepo);
+                        break;
+                    case ("Show UnassignedChore"):
+                        ShowUnassignedChore(choreRepo);
                         break;
                     case ("Exit"):
                         runProgram = false;
@@ -141,14 +144,25 @@ namespace Roommate43
             Console.ReadKey();
         }
 
+        static void ShowUnassignedChore(ChoreRepository choreRepo)
+        {
+            List<Chore> unassignedChore = choreRepo.GetUnassignedChores();
+            foreach (Chore chore in unassignedChore)
+            {
+                Console.WriteLine($"{chore.Name}");
+            }
+            Console.Write("Press any key to continue");
+            Console.ReadKey();
+
+        }
         //Roommate
-        static void SearchOneRoommate(RoommateRepository roommateRepo)
+        static void FindARoommate(RoommateRepository roommateRepo)
         {
             Console.Write("Roommate Id:");
             int id = int.Parse(Console.ReadLine());
 
             Roommate roommate = roommateRepo.GetById(id);
-            Console.WriteLine($"{roommate.Firstname} {roommate.RentPortion} {roommate.Room.Name}");
+            Console.WriteLine($"FirstName:{roommate.Firstname} RentPortion:{roommate.RentPortion} RoomName:{roommate.Room.Name}");
             Console.Write("Press any key to continue");
             Console.ReadKey();
 
@@ -166,7 +180,8 @@ namespace Roommate43
             "Show all chores",
             "Search for chore",
             "Add a chore",
-            "Search for roommate",
+            "Find a roommate",
+            "Show UnassignedChore",
             "Exit"
         };
 
