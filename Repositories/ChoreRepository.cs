@@ -12,13 +12,13 @@ namespace Roommate43.Repositories
         //getting a list of all the chores
         public List<Chore> GetAll()
         {
-            //SqlConnection = Connection 
+            //SqlConnection = Connection Creating a Connection variable 
             using (SqlConnection conn = Connection)
             {
                 //opening the connection 
                 conn.Open();
 
-                //cmd Object is type SqlCommand = conn.CreateCommand
+                //cmd Object is type SqlCommand = conn.CreateCommand Creating a Command variable 
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     //Selecting what we want from the database
@@ -31,6 +31,7 @@ namespace Roommate43.Repositories
                     //A list to hold the chores we get back from the database
                     List<Chore> chores = new List<Chore>();
 
+                    //while there is info to read continue
                     while (reader.Read())
                     {
                         //this is creating the idColumnPosition. This is the number associted with column "Id"
@@ -50,6 +51,7 @@ namespace Roommate43.Repositories
                             Name = nameValue
                         };
 
+                        //add the chore
                         chores.Add(chore);
                     }
                     // closing the connection 
@@ -81,7 +83,7 @@ namespace Roommate43.Repositories
                    
                     // chore is null
                     Chore chore = null;
-                    //
+                    //if we only except a single row back from the database we don't need a while loop
                     if (reader.Read())
                     {
                         chore = new Chore
@@ -102,17 +104,17 @@ namespace Roommate43.Repositories
         //adding a room 
         public void Insert(Chore chore)
         {
-            //SqlConnectin = Connection 
+            //SqlConnectin = Connection.
             using (SqlConnection conn = Connection)
             {
                 //opening connection 
                 conn.Open();
-                //cmd Object is type SqlCommand = conn.CreateCommand
+                //cmd Object is type SqlCommand = conn.CreateCommand. 
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     //we are inserting a chore to the database. The database will give it an id and the value will be name
-                    cmd.CommandText = @"INSERT INTO CHORE (Name)
-                       OUTPUT INTSERTED.Id
+                    cmd.CommandText = @"INSERT INTO Chore (Name)
+                       OUTPUT INSERTED.Id
                        VALUES (@name)";
                     //adds the name value
                     cmd.Parameters.AddWithValue("@name", chore.Name);

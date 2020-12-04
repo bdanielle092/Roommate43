@@ -69,5 +69,19 @@ namespace Roommate43.Repositories
             }
         }
        
+        //public Chore GetById(int id)
+        //{
+        //    using (SqlConnection conn = Connection)
+        //    {
+        //        conn.Open();
+        //        using(SqlCommand cmd = conn.CreateCommand())
+        //        {
+        //            cmd.CommandText = "Select FirstName, LastName, RentPortion, MoveInDate, RoomId FROM Roommate 
+        //                LEFT JOIN Room on Roommate.RoodId = Room.id
+        //                WHERE Id = @Roommate.id";
+                        
+        //        }
+        //    }
+        //}
     }
 }
