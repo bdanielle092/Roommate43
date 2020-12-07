@@ -108,7 +108,7 @@ namespace Roommate43.Repositories
             }
         }
 
-        public void INSERT(Roommate roommate)
+        public void Insert(Roommate roommate)
         {
             using(SqlConnection conn = Connection)
             {
