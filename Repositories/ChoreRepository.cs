@@ -126,6 +126,49 @@ namespace Roommate43.Repositories
             }
         }
 
+        //updates a chore
+        public void Update(Chore chore)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE Chore
+                                        Set Name = @name
+                                    WHERE Id = @id";
+                    cmd.Parameters.AddWithValue("@name", chore.Name);
+                    cmd.Parameters.AddWithValue("id", chore.Id);
+
+                    //execute this SQL code to update a row
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        //delete a chore
+        public void Delete(int id)
+        {
+            using(SqlConnection conn = Connection)
+            {
+                conn.Open();
+                //you must first break the child connection before you can delete the chore, otherwise it will break 
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "DELETE FROM RoommateChore WHERE choreId = @choreId";
+                    cmd.Parameters.AddWithValue("@choreId", id);
+                    cmd.ExecuteNonQuery();
+                }
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "DELETE FROM Chore WHERE Id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        //show unassign chores
         public List<Chore> GetUnassignedChores()
         {
             using (SqlConnection conn = Connection)
@@ -163,5 +206,25 @@ namespace Roommate43.Repositories
                 }
             }
         }
+
+        //assigns a chore
+        public void AssignChore(int roommateId, int choreId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO RoommateChore(RoommateId, ChoreId)
+                                      VALUES(@Roommate, @Chore)";
+                    //adds the name value
+                    cmd.Parameters.AddWithValue("@Roommate", roommateId);
+                    cmd.Parameters.AddWithValue("@Chore", choreId);
+                    //runs the query
+                    cmd.ExecuteScalar();
+                }
+            }
+        }
+
     }
 }

@@ -107,5 +107,31 @@ namespace Roommate43.Repositories
                 }
             }
         }
+
+        public void Insert(Roommate roommate)
+        {
+            using(SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using(SqlCommand cmd = conn.CreateCommand())
+                {
+                    //Inserting a roommmate to the database and the database will get it an id and giving it the values of roommates 
+                    cmd.CommandText = @"INSERT INTO Roommate(FirstName, LastName, RentPortion, MoveInDate)
+                                              OUTPUT INSERTED.Id
+                                              VALUES(@firstName, @lastName, @rentPortion, @moveInDate)";
+                    //this is adding the values of the roommmate
+                    cmd.Parameters.AddWithValue("@firstName", roommate.Firstname);
+                    cmd.Parameters.AddWithValue("@lastName", roommate.Lastname);
+                    cmd.Parameters.AddWithValue("@rentPortion", roommate.RentPortion);
+                    cmd.Parameters.AddWithValue("@moveInDate", roommate.MovedInDate);
+                    //running query and added a new column 
+                    int id = (int)cmd.ExecuteScalar();
+                     //adding a id to the roommate?
+                    roommate.Id = id;
+                       
+                }
+            }
+        }
+
     }
 }
