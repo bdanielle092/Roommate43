@@ -152,6 +152,7 @@ namespace Roommate43.Repositories
             using(SqlConnection conn = Connection)
             {
                 conn.Open();
+                //you must first break the child connection before you can delete the chore, otherwise it will break 
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = "DELETE FROM RoommateChore WHERE choreId = @choreId";
